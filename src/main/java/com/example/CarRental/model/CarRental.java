@@ -5,6 +5,7 @@ import com.example.CarRental.domain.model.ClientEntity;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 @Builder
 @Data
@@ -16,9 +17,9 @@ public class CarRental {
 
     private CarEntity carEntity_id;
 
-    private Date startDate;
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
 
     private Double amount;
 }

@@ -7,7 +7,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 @Builder
 @Data
-public class Car {
+public class Car{
 
     private  String model;
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 @Entity
@@ -21,9 +22,9 @@ public class CarReturnEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Temporal(value= TemporalType.DATE)
+//    @Temporal(value= TemporalType.DATE)
     @Column(name="return_date")
-    private Date return_date;
+    LocalDate return_date;
 
 
     private String comments;

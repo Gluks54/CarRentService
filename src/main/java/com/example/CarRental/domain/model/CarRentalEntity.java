@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,9 +25,9 @@ public class CarRentalEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Temporal(value= TemporalType.DATE)
+//    @Temporal(value= TemporalType.DATE)
     @Column(name="rentDate")
-    private Date rentDate;
+    private LocalDate rentDate;
 
 
 
@@ -36,18 +37,18 @@ public class CarRentalEntity {
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
-    private  CarEntity carEntity_id;
+    CarEntity carEntity_id;
 
-    @Temporal(value= TemporalType.DATE)
+//    @Temporal(value= TemporalType.DATE)
     @Column(name="start_date")
-    private Date startDate;
+    LocalDate startDate;
 
 
-    @Temporal(value= TemporalType.DATE)
+//    @Temporal(value= TemporalType.DATE)
     @Column(name="end_date")
-    private Date endDate;
+    LocalDate endDate;
 
-    private Double amount;
+    Double amount;
 
     @OneToOne(cascade = CascadeType.ALL,optional = false,fetch = FetchType.EAGER)
     @JoinColumn(name = "returnCar_id", referencedColumnName = "id")
