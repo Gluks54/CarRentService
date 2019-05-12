@@ -11,11 +11,7 @@ import java.util.UUID;
 @Data
 public class CarReturn {
 
-    private Date return_date;
-
-    private String comments;
-
-    private String surcharge;
+    private double surcharge;
 
     UUID CarRental;
 }
