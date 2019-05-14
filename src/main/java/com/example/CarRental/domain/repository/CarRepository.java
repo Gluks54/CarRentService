@@ -27,6 +27,9 @@ public interface CarRepository extends CrudRepository<CarEntity, UUID> {
             @Param("reliseYear")Integer reliseYear
             );
 
+    @Query("SELECT a FROM CarEntity a")
+    List<CarEntity> getAllCars();
+
 //    query.getAmount(),query.getCarBodyType(),query.getCarStatus(),
 //            query.getModel(),query.getReleaseYear());
 
