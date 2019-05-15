@@ -18,8 +18,8 @@ public interface CarRepository extends CrudRepository<CarEntity, UUID> {
 
 
     @Query("SELECT a FROM CarEntity a" +
-            " WHERE a.carStatus = 'AVAILABLE' AND a.amount = :amount OR a.carBodyType = :bodyType " +
-            " OR a.model = :model OR a.releaseYear = :reliseYear")
+            " WHERE a.carStatus = 'AVAILABLE' AND (a.amount = :amount OR a.carBodyType = :bodyType " +
+            " OR a.model = :model OR a.releaseYear = :reliseYear)")
     List<CarEntity> getAvailableCarsByParameter(
             @Param("amount") Double amount,
             @Param("bodyType") String bodyType,
@@ -38,7 +38,9 @@ public interface CarRepository extends CrudRepository<CarEntity, UUID> {
 //    /    @Query(value = "SELECT * FROM User c WHERE c.age = ?1 ",nativeQuery = true)
 //        List<User> findAllByAddress(String s);
 
-
+//    @Query("SELECT a FROM CarEntity a" +
+//            " WHERE a.carStatus = 'AVAILABLE' AND a.amount = :amount OR a.carBodyType = :bodyType " +
+////            " OR a.model = :model OR a.releaseYear = :reliseYear")
 
 //    @Query("SELECT u FROM User u WHERE u.status = :status and u.name = :name")
 //    User findUserByStatusAndNameNamedParams(
