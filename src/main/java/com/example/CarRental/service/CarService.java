@@ -2,7 +2,9 @@ package com.example.CarRental.service;
 
 import com.example.CarRental.domain.model.CarEntity;
 import com.example.CarRental.domain.model.CarRentalEntity;
+import com.example.CarRental.domain.model.CarReturnEntity;
 import com.example.CarRental.domain.model.ClientEntity;
+import com.example.CarRental.domain.repository.CarRentalRepository;
 import com.example.CarRental.domain.repository.CarRepository;
 import com.example.CarRental.domain.repository.ClientRepository;
 import com.example.CarRental.model.AvailableCarsQuery;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,9 @@ public class CarService {
 
     @Autowired
     ClientRepository clientRepository;
+
+    @Autowired
+    CarRentalRepository carRentalRepository;
 
 
     public List<Car> getAvailableCarsByParameter(AvailableCarsQuery query) {
@@ -61,18 +67,30 @@ public class CarService {
 
     public UUID addRentCar(UUID carId, UUID clientid, LocalDate startDate, LocalDate endDate){
      Optional<CarEntity> car = carRepository.findById(carId);
+     Optional<ClientEntity> client = clientRepository.findById(clientid);
+
+        CarReturnEntity carReturnEntity = CarReturnEntity
+                .builder()
+                .build();
+
      Double amountFromCar = car.get().getAmount();
 
-//     LocalDate diffBetwStartAndDate = endDate - startDate
+     Period period = Period.between(startDate, endDate);
 
-//        CarRentalEntity entity = new CarRentalEntity();
-//        entity.setStartDate(startDate);
-//
-//
-//
-//        CarRentalEntity e = carRentalRepository.save(endDate);
-//        return e.getId();
-        return null;
+     Double periodOfDay = (double) (period.getYears() * 365 + period.getMonths() * 30 + period.getDays());
+
+        CarRentalEntity carRentalEntity =  CarRentalEntity
+                .builder()
+                .amount(amountFromCar * periodOfDay)
+                .startDate(startDate)
+                .endDate(endDate)
+                .rentDate(LocalDate.now())
+                .carEntity_id(car.get())
+                .clientEntity_id(client.get())
+                .carReturnEntity(carReturnEntity)
+                .build();
+
+        return carRentalRepository.save(carRentalEntity).getId();
     }
 
 

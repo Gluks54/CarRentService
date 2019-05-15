@@ -1,22 +1,24 @@
 package com.example.CarRental.controllers;
 
+import com.example.CarRental.domain.repository.CarRentalRepository;
 import com.example.CarRental.model.AvailableCarsQuery;
 import com.example.CarRental.model.Car;
 import com.example.CarRental.model.CarStatus;
 import com.example.CarRental.model.Client;
 import com.example.CarRental.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class YahorTestControllers {
 
     @Autowired
     CarService carService;
+
 
 
     @GetMapping("/listOfCars")
@@ -69,5 +71,16 @@ public class YahorTestControllers {
                .build();
 
         carService.addCar(car);
+    }
+
+    @GetMapping("/testMethodAddRentCar")
+    public void testMethod(@RequestParam("carId") String carId,
+                           @RequestParam("clientid") String clientid){
+
+        LocalDate date1 = LocalDate.of(2019,10,10);
+        LocalDate date2 = LocalDate.of(2019,10,15);
+        System.out.println(UUID.fromString(carId));
+        carService.addRentCar(UUID.fromString(carId),UUID.fromString(clientid),date1,date2);
+
     }
 }
