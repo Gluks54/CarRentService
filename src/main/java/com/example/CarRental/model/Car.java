@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+
 import java.util.UUID;
 
 @Builder
@@ -13,9 +14,9 @@ public class Car{
 
     private UUID id;
 
-    private  String model;
+    private String model;
 
-    private  String carBodyType;
+    private String carBodyType;
 
     private Integer releaseYear;
 

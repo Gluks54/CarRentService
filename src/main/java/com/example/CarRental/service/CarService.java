@@ -25,18 +25,35 @@ public class CarService {
     ClientRepository clientRepository;
 
 
-    public List<Car> getAvailableCarsByParameter(AvailableCarsQuery query){
+    public List<Car> getAvailableCarsByParameter(AvailableCarsQuery query) {
         List<CarEntity> carEntities = carRepository
-                .getAvailableCarsByParameter(query.getAmount(),query.getCarBodyType(),
-                        query.getModel(),query.getReleaseYear());
+                .getAvailableCarsByParameter(query.getAmount(), query.getCarBodyType(),
+                        query.getModel(), query.getReleaseYear());
 
         return carEntities.stream()
-                .map(x->map(x))
+                .map(x -> map(x))
                 .collect(Collectors.toList());
     }
 
+    public List<Car> getAllCars() {
+        List<CarEntity> carEntities = carRepository.getAllCars();
 
-    public Car map(CarEntity source){
+        return carEntities.stream()
+                .map(x -> map(x))
+                .collect(Collectors.toList());
+    }
+
+    public void addClient(Client client) {
+        //  TODO: fix it
+//        clientRepository.addClient(
+//                client.getName(),
+//                client.getSurname(),
+//                client.getEmail(),
+//                client.getSurname()
+//        );
+    }
+
+    public Car map(CarEntity source) {
         return Car
                 .builder()
                 .id(source.getId())
@@ -48,7 +65,7 @@ public class CarService {
                 .build();
     }
 
-    public CarEntity map(Car source){
+    public CarEntity map(Car source) {
         return CarEntity
                 .builder()
                 .carBodyType(source.getCarBodyType())
