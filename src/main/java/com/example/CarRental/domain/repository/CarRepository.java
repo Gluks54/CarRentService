@@ -18,8 +18,14 @@ public interface CarRepository extends CrudRepository<CarEntity, UUID> {
 
 
     @Query("SELECT a FROM CarEntity a" +
-            " WHERE a.carStatus = 'AVAILABLE' AND (a.amount = :amount OR a.carBodyType = :bodyType " +
-            " OR a.model = :model OR a.releaseYear = :reliseYear)")
+            " WHERE a.carStatus = 'AVAILABLE' " +
+            "AND ((a.amount = :amount OR a.carBodyType = :bodyType  OR a.model = :model OR a.releaseYear = :reliseYear) " +
+            "OR (a.amount = :amount AND a.carBodyType = :bodyType) " +
+            "OR (a.amount = :amount AND a.model = :model) " +
+            "OR (a.amount = :amount AND a.releaseYear = :reliseYear)" +
+            "OR (a.carBodyType = :bodyType  AND a.model = :model) " +
+            "OR (a.carBodyType = :bodyType AND a.releaseYear = :reliseYear) " +
+            "OR (a.model = :model AND a.releaseYear = :reliseYear))")
     List<CarEntity> getAvailableCarsByParameter(
             @Param("amount") Double amount,
             @Param("bodyType") String bodyType,
