@@ -1,6 +1,7 @@
 package com.example.CarRental.service;
 
 import com.example.CarRental.domain.model.CarEntity;
+import com.example.CarRental.domain.model.CarRentalEntity;
 import com.example.CarRental.domain.model.ClientEntity;
 import com.example.CarRental.domain.repository.CarRepository;
 import com.example.CarRental.domain.repository.ClientRepository;
@@ -10,8 +11,8 @@ import com.example.CarRental.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,14 +44,57 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
-    public void addClient(Client client) {
-        //  TODO: fix it
-//        clientRepository.addClient(
-//                client.getName(),
-//                client.getSurname(),
-//                client.getEmail(),
-//                client.getSurname()
-//        );
+    public UUID addCar(Car car){
+        return carRepository.save(map(car)).getId();
+    }
+
+    public UUID addClient(Client client){
+        return clientRepository.save(map(client)).getId();
+    }
+
+    public List<Client> getAllClients(){
+        List<Client> clients = new ArrayList<>();
+        clientRepository.getAllClients().forEach(x->clients.add(map(x)));
+        return clients;
+    }
+
+
+    public UUID addRentCar(UUID carId, UUID clientid, LocalDate startDate, LocalDate endDate){
+     Optional<CarEntity> car = carRepository.findById(carId);
+     Double amountFromCar = car.get().getAmount();
+
+//     LocalDate diffBetwStartAndDate = endDate - startDate
+
+//        CarRentalEntity entity = new CarRentalEntity();
+//        entity.setStartDate(startDate);
+//
+//
+//
+//        CarRentalEntity e = carRentalRepository.save(endDate);
+//        return e.getId();
+        return null;
+    }
+
+
+
+    private Client map(ClientEntity source){
+        return Client
+                .builder()
+                .address(source.getAddress())
+                .email(source.getEmail())
+                .name(source.getName())
+                .surname(source.getSurname())
+                .build();
+    }
+
+    private ClientEntity  map(Client source){
+        return  ClientEntity
+                .builder()
+                .address(source.getAddress())
+                .email(source.getEmail())
+                .name(source.getName())
+                .surname(source.getSurname())
+                .build();
     }
 
     public Car map(CarEntity source) {

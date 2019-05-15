@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ClientRepository extends CrudRepository<ClientEntity, UUID> {
@@ -17,4 +18,7 @@ public interface ClientRepository extends CrudRepository<ClientEntity, UUID> {
             @Param("email") String email,
             @Param("address") String address
     );
+
+    @Query("SELECT a FROM ClientEntity a")
+    List<ClientEntity> getAllClients();
 }
