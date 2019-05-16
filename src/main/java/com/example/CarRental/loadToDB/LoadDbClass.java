@@ -148,7 +148,7 @@ public class LoadDbClass {
 
         CarReturnEntity carReturnEntity1 = CarReturnEntity
                 .builder()
-                .surcharge("39")
+                .surcharge(Double.valueOf(29))
                 .comments("it was good car")
                 .return_date(date1)
                 .build();
@@ -157,7 +157,7 @@ public class LoadDbClass {
 
         CarReturnEntity carReturnEntity2 = CarReturnEntity
                 .builder()
-                .surcharge("20")
+                .surcharge(Double.valueOf(25))
                 .comments("it was bad car")
                 .return_date(date2)
                 .build();

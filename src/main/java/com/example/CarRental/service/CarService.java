@@ -35,6 +35,7 @@ public class CarService {
     CarRentalRepository carRentalRepository;
 
 
+
     public List<Car> getAvailableCarsByParameter(AvailableCarsQuery query) {
         List<CarEntity> carEntities = carRepository
                 .getAvailableCarsByParameter(query.getAmount(), query.getCarBodyType(),
@@ -134,6 +135,21 @@ public class CarService {
 
     public Car getCar(UUID carID){
       return map(carRepository.findById(carID).get());
+    }
+
+
+    public boolean checkPayment(UUID rentId, Double amountFromClient) {
+
+      Double amountFromRent =  carRentalRepository.findById(rentId).get().getAmount();
+
+      Double amountFromReturn = carRentalRepository.findById(rentId).get().getCarReturnEntity().getSurcharge();
+
+      Double controlSum = amountFromRent + amountFromReturn;
+
+      if(amountFromClient == controlSum){
+          return true;
+      }else return false;
+
     }
 
 

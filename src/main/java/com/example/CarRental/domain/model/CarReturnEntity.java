@@ -29,7 +29,7 @@ public class CarReturnEntity {
 
     private String comments;
 
-    private String surcharge;
+    private Double surcharge;
 
     @OneToOne(mappedBy = "carReturnEntity",fetch = FetchType.LAZY)
     private CarRentalEntity carRentalEntity;

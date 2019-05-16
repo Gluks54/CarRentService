@@ -7,10 +7,14 @@ import com.example.CarRental.model.CarStatus;
 import com.example.CarRental.model.Client;
 import com.example.CarRental.service.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -83,4 +87,17 @@ public class YahorTestControllers {
         carService.addRentCar(UUID.fromString(carId),UUID.fromString(clientid),date1,date2);
 
     }
+
+//    @PostMapping("/checkPayment")
+//    @ResponseBody
+//    public RequestEntity chackPayment(@RequestParam("rentId") String rentId,
+//                                      @RequestParam ("amount") Double amountFromClient){
+//
+//        if(carService.checkPayment(UUID.fromString(rentId),amountFromClient)){
+//            return  new ResponseEntity< String >("everything is Ok", HttpStatus.OK);
+//        }else
+//    }
+
+
+
 }
