@@ -6,16 +6,19 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.UUID;
+
 @Builder
 @Data
 public class CarRental {
 
-    private Date rentDate;
+    private UUID id;
 
-    private ClientEntity clientEntity_id;
+    private LocalDate rentDate;
 
-    private CarEntity carEntity_id;
+    private ClientEntity clientEntity;
+
+    private CarEntity carEntity;
 
     private LocalDate startDate;
 
