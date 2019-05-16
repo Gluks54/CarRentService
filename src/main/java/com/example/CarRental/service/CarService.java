@@ -5,10 +5,12 @@ import com.example.CarRental.domain.model.CarRentalEntity;
 import com.example.CarRental.domain.model.CarReturnEntity;
 import com.example.CarRental.domain.model.ClientEntity;
 import com.example.CarRental.domain.repository.CarRentalRepository;
+import com.example.CarRental.domain.repository.CarRentalRepository;
 import com.example.CarRental.domain.repository.CarRepository;
 import com.example.CarRental.domain.repository.ClientRepository;
 import com.example.CarRental.model.AvailableCarsQuery;
 import com.example.CarRental.model.Car;
+import com.example.CarRental.model.CarStatus;
 import com.example.CarRental.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,10 @@ import java.time.Period;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 @Service
 public class CarService {
-
 
     @Autowired
     CarRepository carRepository;
@@ -69,15 +72,9 @@ public class CarService {
      Optional<CarEntity> car = carRepository.findById(carId);
      Optional<ClientEntity> client = clientRepository.findById(clientid);
 
-        CarReturnEntity carReturnEntity = CarReturnEntity
-                .builder()
-                .build();
-
      Double amountFromCar = car.get().getAmount();
 
-     Period period = Period.between(startDate, endDate);
-
-     Double periodOfDay = (double) (period.getYears() * 365 + period.getMonths() * 30 + period.getDays());
+     Double periodOfDay = (double)DAYS.between(startDate, endDate);
 
         CarRentalEntity carRentalEntity =  CarRentalEntity
                 .builder()
@@ -87,13 +84,10 @@ public class CarService {
                 .rentDate(LocalDate.now())
                 .carEntity_id(car.get())
                 .clientEntity_id(client.get())
-                .carReturnEntity(carReturnEntity)
                 .build();
 
         return carRentalRepository.save(carRentalEntity).getId();
     }
-
-
 
     private Client map(ClientEntity source){
         return Client
@@ -136,5 +130,17 @@ public class CarService {
                 .model(source.getModel())
                 .releaseYear(source.getReleaseYear())
                 .build();
+    }
+
+    public Car getCar(UUID carID){
+      return map(carRepository.findById(carID).get());
+    }
+
+
+    public boolean updateCarStatus(UUID carID, CarStatus carStatus) {
+        if(carRepository.findById(carID).isPresent()) {
+            carRepository.findById(carID).get().setCarStatus(carStatus);
+            return true;
+        }else return false;
     }
 }
