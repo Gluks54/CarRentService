@@ -1,22 +1,23 @@
 package com.example.CarRental.service;
 
 import com.example.CarRental.domain.model.CarEntity;
-import com.example.CarRental.domain.model.ClientEntity;
 import com.example.CarRental.domain.repository.CarRepository;
 import com.example.CarRental.domain.repository.ClientRepository;
 import com.example.CarRental.model.AvailableCarsQuery;
 import com.example.CarRental.model.Car;
-import com.example.CarRental.model.Client;
+import com.example.CarRental.model.CarStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class CarService {
-
 
     @Autowired
     CarRepository carRepository;
@@ -36,21 +37,32 @@ public class CarService {
     }
 
     public List<Car> getAllCars() {
-        List<CarEntity> carEntities = carRepository.getAllCars();
-
-        return carEntities.stream()
+        return StreamSupport.stream(carRepository.findAll().spliterator(), false)
                 .map(x -> map(x))
                 .collect(Collectors.toList());
     }
 
-    public void addClient(Client client) {
-        //  TODO: fix it
-//        clientRepository.addClient(
-//                client.getName(),
-//                client.getSurname(),
-//                client.getEmail(),
-//                client.getSurname()
-//        );
+    public UUID addRentCar(UUID carId, UUID clientid, Date startDate, Date endDate) {
+        // TODO
+        return null;
+    }
+
+    public Car getCar(UUID carId) {
+        Optional<CarEntity> carEntityOptional = carRepository.findById(carId);
+        if (!carEntityOptional.isPresent()) {
+            return null;
+        }
+        return map(carEntityOptional.get());
+    }
+
+    public void updateCarStatus(UUID carId, CarStatus carStatus) {
+        Optional<CarEntity> carEntityOptional = carRepository.findById(carId);
+        if (!carEntityOptional.isPresent()) {
+            return;
+        }
+        CarEntity carEntity = carEntityOptional.get();
+        carEntity.setCarStatus(carStatus);
+        carRepository.save(carEntity);
     }
 
     public Car map(CarEntity source) {
