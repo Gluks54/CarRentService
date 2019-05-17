@@ -1,6 +1,7 @@
 package com.example.CarRental.service;
 
 import com.example.CarRental.domain.model.CarEntity;
+import com.example.CarRental.domain.model.ClientEntity;
 import com.example.CarRental.domain.repository.CarRepository;
 import com.example.CarRental.domain.repository.ClientRepository;
 import com.example.CarRental.model.AvailableCarsQuery;
@@ -9,7 +10,8 @@ import com.example.CarRental.model.CarStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -25,6 +27,8 @@ public class CarService {
     @Autowired
     ClientRepository clientRepository;
 
+    @Autowired
+    CarRentalService carRentalService;
 
     public List<Car> getAvailableCarsByParameter(AvailableCarsQuery query) {
         List<CarEntity> carEntities = carRepository
@@ -42,8 +46,26 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
-    public UUID addRentCar(UUID carId, UUID clientid, Date startDate, Date endDate) {
+    public UUID rentCar(UUID clientId, Car car, LocalDate startDate, LocalDate endDate) {
+        Double amountFromCar = car.getAmount();
+        long days = Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+
+        ClientEntity clientEntity = clientRepository.findById(clientId).get();
+
+        updateCarStatus(car.getId(), CarStatus.RENTED);
+
+        return carRentalService.addEntry(
+                startDate,
+                endDate,
+                clientEntity,
+                map(car),
+                amountFromCar * days
+        );
+    }
+
+    public UUID returnCar(UUID carRentalId) {
         // TODO
+
         return null;
     }
 

@@ -3,7 +3,7 @@ package com.example.CarRental.model;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Builder
@@ -14,7 +14,7 @@ public class CarRentalRequestBody {
 
     private UUID carId;
 
-    private Date startDate;
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
 }

@@ -1,6 +1,7 @@
 package com.example.CarRental.controllers;
 
 import com.example.CarRental.model.*;
+import com.example.CarRental.service.CarRentalService;
 import com.example.CarRental.service.CarService;
 import com.example.CarRental.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class CarRentController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private CarRentalService carRentalService;
 
     @RequestMapping(value = "/filteredCars", method = GET)
     @ResponseBody
@@ -63,7 +67,7 @@ public class CarRentController {
     @PostMapping("/rentCar")
     @ResponseBody
     public ResponseEntity rentCar(@RequestBody CarRentalRequestBody carRentalRequestBody) {
-        // 1. check if client with ClientId exists
+        // 1. check if client with clientId exists
         UUID clientId = carRentalRequestBody.getClientId();
         if (!clientService.clientExists(clientId)) {
             return new ResponseEntity<>(
@@ -91,17 +95,57 @@ public class CarRentController {
         }
 
         // 4. check if startDate and endDate are valid
-        // TODO
+        // TODO:
+        //     1. check if startDate <= endDate,
+        //     2. startDate >= now()
 
         // 5. rent car
-        carService.updateCarStatus(carId, CarStatus.RENTED);
-        carService.addRentCar(
+        carService.rentCar(
                 clientId,
-                carId,
+                car,
                 carRentalRequestBody.getStartDate(),
                 carRentalRequestBody.getEndDate()
         );
 
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @PostMapping("/returnCar")
+    @ResponseBody
+    public ResponseEntity returnCar(@RequestBody CarReturnRequestBody returnCarRequestBody) {
+        // 1. check if client with given clientId exists
+        UUID clientId = returnCarRequestBody.getClientId();
+        if (!clientService.clientExists(clientId)) {
+            return new ResponseEntity<>(
+                    "Client with this clientId does not exist",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        // 2. check if carRental entry with given carRentalId exists
+        UUID carRentalId = returnCarRequestBody.getCarRentalId();
+        CarRental carRental = carRentalService.getCarRental(carRentalId);
+        if (carRental == null) {
+            return new ResponseEntity<>(
+                    "CarRental entry with given carRentalId does not exist",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        // 3. check if clientIds match
+        if (clientId != carRental.getClientEntity().getId()) {
+            return new ResponseEntity<>(
+                    "Given clientId does not match with the clientId belonging to the given carRental entry",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        // 4. check if car has already been returned
+        // TODO
+
+        carService.returnCar(carRentalId);
+
+        // TODO: return JSON response: { "amountToPay": <number> }
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
