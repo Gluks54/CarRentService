@@ -10,7 +10,6 @@ import com.example.CarRental.domain.repository.CarRepository;
 import com.example.CarRental.domain.repository.CarReturnRepository;
 import com.example.CarRental.domain.repository.ClientRepository;
 
-import com.example.CarRental.model.CarReturn;
 import com.example.CarRental.model.CarStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 @Component
 public class LoadDbClass {
@@ -148,7 +145,7 @@ public class LoadDbClass {
 
         CarReturnEntity carReturnEntity1 = CarReturnEntity
                 .builder()
-                .surcharge("39")
+                .surcharge(39.0)
                 .comments("it was good car")
                 .return_date(date1)
                 .build();
@@ -157,7 +154,7 @@ public class LoadDbClass {
 
         CarReturnEntity carReturnEntity2 = CarReturnEntity
                 .builder()
-                .surcharge("20")
+                .surcharge(20.0)
                 .comments("it was bad car")
                 .return_date(date2)
                 .build();
