@@ -1,26 +1,22 @@
 package com.example.CarRental.service;
 
 import com.example.CarRental.domain.model.CarEntity;
-import com.example.CarRental.domain.model.CarRentalEntity;
-import com.example.CarRental.domain.model.CarReturnEntity;
 import com.example.CarRental.domain.model.ClientEntity;
-import com.example.CarRental.domain.repository.CarRentalRepository;
-import com.example.CarRental.domain.repository.CarRentalRepository;
 import com.example.CarRental.domain.repository.CarRepository;
 import com.example.CarRental.domain.repository.ClientRepository;
 import com.example.CarRental.model.AvailableCarsQuery;
 import com.example.CarRental.model.Car;
 import com.example.CarRental.model.CarStatus;
-import com.example.CarRental.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
-import java.time.Period;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static java.time.temporal.ChronoUnit.DAYS;
+import java.util.stream.StreamSupport;
 
 @Service
 public class CarService {
@@ -32,9 +28,7 @@ public class CarService {
     ClientRepository clientRepository;
 
     @Autowired
-    CarRentalRepository carRentalRepository;
-
-
+    CarRentalService carRentalService;
 
     public List<Car> getAvailableCarsByParameter(AvailableCarsQuery query) {
         List<CarEntity> carEntities = carRepository
@@ -47,67 +41,50 @@ public class CarService {
     }
 
     public List<Car> getAllCars() {
-        List<CarEntity> carEntities = carRepository.getAllCars();
-
-        return carEntities.stream()
+        return StreamSupport.stream(carRepository.findAll().spliterator(), false)
                 .map(x -> map(x))
                 .collect(Collectors.toList());
     }
 
-    public UUID addCar(Car car){
-        return carRepository.save(map(car)).getId();
+    public UUID rentCar(UUID clientId, Car car, LocalDate startDate, LocalDate endDate) {
+        Double amountFromCar = car.getAmount();
+        long days = Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
+
+        ClientEntity clientEntity = clientRepository.findById(clientId).get();
+
+        updateCarStatus(car.getId(), CarStatus.RENTED);
+
+        return carRentalService.addEntry(
+                startDate,
+                endDate,
+                clientEntity,
+                map(car),
+                amountFromCar * days
+        );
     }
 
-    public UUID addClient(Client client){
-        return clientRepository.save(map(client)).getId();
+    public UUID returnCar(UUID carRentalId) {
+        // TODO
+
+        return null;
     }
 
-    public List<Client> getAllClients(){
-        List<Client> clients = new ArrayList<>();
-        clientRepository.getAllClients().forEach(x->clients.add(map(x)));
-        return clients;
+    public Car getCar(UUID carId) {
+        Optional<CarEntity> carEntityOptional = carRepository.findById(carId);
+        if (!carEntityOptional.isPresent()) {
+            return null;
+        }
+        return map(carEntityOptional.get());
     }
 
-
-    public UUID addRentCar(UUID carId, UUID clientid, LocalDate startDate, LocalDate endDate){
-     Optional<CarEntity> car = carRepository.findById(carId);
-     Optional<ClientEntity> client = clientRepository.findById(clientid);
-
-     Double amountFromCar = car.get().getAmount();
-
-     Double periodOfDay = (double)DAYS.between(startDate, endDate);
-
-        CarRentalEntity carRentalEntity =  CarRentalEntity
-                .builder()
-                .amount(amountFromCar * periodOfDay)
-                .startDate(startDate)
-                .endDate(endDate)
-                .rentDate(LocalDate.now())
-                .carEntity_id(car.get())
-                .clientEntity_id(client.get())
-                .build();
-
-        return carRentalRepository.save(carRentalEntity).getId();
-    }
-
-    private Client map(ClientEntity source){
-        return Client
-                .builder()
-                .address(source.getAddress())
-                .email(source.getEmail())
-                .name(source.getName())
-                .surname(source.getSurname())
-                .build();
-    }
-
-    private ClientEntity  map(Client source){
-        return  ClientEntity
-                .builder()
-                .address(source.getAddress())
-                .email(source.getEmail())
-                .name(source.getName())
-                .surname(source.getSurname())
-                .build();
+    public void updateCarStatus(UUID carId, CarStatus carStatus) {
+        Optional<CarEntity> carEntityOptional = carRepository.findById(carId);
+        if (!carEntityOptional.isPresent()) {
+            return;
+        }
+        CarEntity carEntity = carEntityOptional.get();
+        carEntity.setCarStatus(carStatus);
+        carRepository.save(carEntity);
     }
 
     public Car map(CarEntity source) {
@@ -131,32 +108,5 @@ public class CarService {
                 .model(source.getModel())
                 .releaseYear(source.getReleaseYear())
                 .build();
-    }
-
-    public Car getCar(UUID carID){
-      return map(carRepository.findById(carID).get());
-    }
-
-
-    public boolean checkPayment(UUID rentId, Double amountFromClient) {
-
-      Double amountFromRent =  carRentalRepository.findById(rentId).get().getAmount();
-
-      Double amountFromReturn = carRentalRepository.findById(rentId).get().getCarReturnEntity().getSurcharge();
-
-      Double controlSum = amountFromRent + amountFromReturn;
-
-      if(amountFromClient == controlSum){
-          return true;
-      }else return false;
-
-    }
-
-
-    public boolean updateCarStatus(UUID carID, CarStatus carStatus) {
-        if(carRepository.findById(carID).isPresent()) {
-            carRepository.findById(carID).get().setCarStatus(carStatus);
-            return true;
-        }else return false;
     }
 }

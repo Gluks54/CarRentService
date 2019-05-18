@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 public class CarRental {
 
-    private LocalDate rentDate;
+    private Date rentDate;
 
     private ClientEntity clientEntity_id;
 

@@ -39,14 +39,14 @@ public class YahorTestControllers {
        return carService.getAvailableCarsByParameter(carsQuery);
     }
 
-    @GetMapping("/listOfClients")
-    List<Client> getAllClients(){
-        return carService.getAllClients();
-    }
+//    @GetMapping("/listOfClients")
+//    List<Client> getAllClients(){
+//        return carService.getAllClients();
+//    }
 
 
     @PostMapping("/addClienstSecondVersion")
-    public void addClient(){
+    public void addClient() {
 
 
         Client client = Client
@@ -57,47 +57,46 @@ public class YahorTestControllers {
                 .email("mazxzxriam@gmail.com")
                 .build();
 
-
-        System.out.println(carService.addClient(client));
-//'Content-Type': 'application/json'
-    }
-
-
-    @GetMapping("/addCarTest")
-    public void addCartest(){
-       Car car = Car
-               .builder()
-               .carBodyType("Crossover")
-               .model("AudiTT ")
-               .carStatus(CarStatus.RENTED)
-               .amount(Double.valueOf(50.0))
-               .releaseYear(Integer.valueOf(2016))
-               .build();
-
-        carService.addCar(car);
-    }
-
-    @GetMapping("/testMethodAddRentCar")
-    public void testMethod(@RequestParam("carId") String carId,
-                           @RequestParam("clientid") String clientid){
-
-        LocalDate date1 = LocalDate.of(2019,10,10);
-        LocalDate date2 = LocalDate.of(2019,10,15);
-        System.out.println(UUID.fromString(carId));
-        carService.addRentCar(UUID.fromString(carId),UUID.fromString(clientid),date1,date2);
-
-    }
-
-//    @PostMapping("/checkPayment")
-//    @ResponseBody
-//    public RequestEntity chackPayment(@RequestParam("rentId") String rentId,
-//                                      @RequestParam ("amount") Double amountFromClient){
 //
-//        if(carService.checkPayment(UUID.fromString(rentId),amountFromClient)){
-//            return  new ResponseEntity< String >("everything is Ok", HttpStatus.OK);
-//        }else
+//        System.out.println(carService.addClient(client));
+////'Content-Type': 'application/json'
 //    }
 
 
+//    @GetMapping("/addCarTest")
+//    public void addCartest(){
+//       Car car = Car
+//               .builder()
+//               .carBodyType("Crossover")
+//               .model("AudiTT ")
+//               .carStatus(CarStatus.RENTED)
+//               .amount(Double.valueOf(50.0))
+//               .releaseYear(Integer.valueOf(2016))
+//               .build();
+//
+//        carService.addCar(car);
+//    }
 
+//    @GetMapping("/testMethodAddRentCar")
+//    public void testMethod(@RequestParam("carId") String carId,
+//                           @RequestParam("clientid") String clientid){
+//
+//        LocalDate date1 = LocalDate.of(2019,10,10);
+//        LocalDate date2 = LocalDate.of(2019,10,15);
+//        System.out.println(UUID.fromString(carId));
+//        carService.addRentCar(UUID.fromString(carId),UUID.fromString(clientid),date1,date2);
+//
+//    }
+
+    @PostMapping("/checkPayment")
+    @ResponseBody
+    public RequestEntity chackPayment(@RequestParam("rentId") String rentId,
+                                      @RequestParam ("amount") Double amountFromClient){
+
+        if(carService.checkPayment(UUID.fromString(rentId),amountFromClient)){
+            return  new ResponseEntity< String >("everything is Ok", HttpStatus.OK);
+        }else new ResponseEntity< String >("everything is Ok", HttpStatus.BAD_REQUEST;    }
+
+
+    }
 }
