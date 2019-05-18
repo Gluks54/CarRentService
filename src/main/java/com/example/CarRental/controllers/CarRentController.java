@@ -16,6 +16,7 @@ import java.util.UUID;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
+@RequestMapping("api")
 public class CarRentController {
 
     @Autowired
