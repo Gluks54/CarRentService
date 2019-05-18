@@ -1,11 +1,13 @@
 package com.example.CarRental.service;
 
 import com.example.CarRental.domain.model.CarEntity;
+import com.example.CarRental.domain.model.CarReturnEntity;
 import com.example.CarRental.domain.model.ClientEntity;
 import com.example.CarRental.domain.repository.CarRepository;
 import com.example.CarRental.domain.repository.ClientRepository;
 import com.example.CarRental.model.AvailableCarsQuery;
 import com.example.CarRental.model.Car;
+import com.example.CarRental.model.CarRental;
 import com.example.CarRental.model.CarStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,10 +65,10 @@ public class CarService {
         );
     }
 
-    public UUID returnCar(UUID carRentalId) {
-        // TODO
-
-        return null;
+    public Double returnCar(CarRental carRental, String comments) {
+        CarReturnEntity carReturnEntity = carRentalService.updateReturnEntry(carRental, comments);
+        updateCarStatus(carRental.getCarEntity().getId(), CarStatus.AVAILABLE);
+        return carReturnEntity.getSurcharge();
     }
 
     public Car getCar(UUID carId) {

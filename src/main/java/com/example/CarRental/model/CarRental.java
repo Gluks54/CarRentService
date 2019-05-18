@@ -1,6 +1,7 @@
 package com.example.CarRental.model;
 
 import com.example.CarRental.domain.model.CarEntity;
+import com.example.CarRental.domain.model.CarReturnEntity;
 import com.example.CarRental.domain.model.ClientEntity;
 import lombok.Builder;
 import lombok.Data;
@@ -25,4 +26,6 @@ public class CarRental {
     private LocalDate endDate;
 
     private Double amount;
+
+    private CarReturnEntity carReturnEntity;
 }

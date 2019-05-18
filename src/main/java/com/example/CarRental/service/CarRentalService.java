@@ -5,10 +5,12 @@ import com.example.CarRental.domain.model.CarRentalEntity;
 import com.example.CarRental.domain.model.CarReturnEntity;
 import com.example.CarRental.domain.model.ClientEntity;
 import com.example.CarRental.domain.repository.CarRentalRepository;
+import com.example.CarRental.domain.repository.CarReturnRepository;
 import com.example.CarRental.model.CarRental;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
@@ -18,6 +20,9 @@ public class CarRentalService {
 
     @Autowired
     CarRentalRepository carRentalRepository;
+
+    @Autowired
+    CarReturnRepository carReturnRepository;
 
     public UUID addEntry(
             LocalDate startDate,
@@ -54,6 +59,23 @@ public class CarRentalService {
         return map(carRentalEntityOptional.get());
     }
 
+    public CarReturnEntity updateReturnEntry(CarRental carRental, String comments) {
+        LocalDate returnDate = LocalDate.now();
+
+        long days = Duration.between(carRental.getEndDate().atStartOfDay(), returnDate.atStartOfDay()).toDays();
+        Double pricePerDay = carRental.getCarEntity().getAmount();
+
+        Double subcharge = days * pricePerDay;
+
+        CarReturnEntity carReturnEntity = carRental.getCarReturnEntity();
+        carReturnEntity.setReturn_date(returnDate);
+        carReturnEntity.setComments(comments);
+        carReturnEntity.setSurcharge(subcharge);
+        carReturnRepository.save(carReturnEntity);
+
+        return carReturnEntity;
+    }
+
     public CarRental map(CarRentalEntity source) {
         return CarRental
                 .builder()
@@ -64,6 +86,7 @@ public class CarRentalService {
                 .startDate(source.getStartDate())
                 .endDate(source.getEndDate())
                 .amount(source.getAmount())
+                .carReturnEntity(source.getCarReturnEntity())
                 .build();
     }
 
@@ -76,6 +99,7 @@ public class CarRentalService {
                 .startDate(source.getStartDate())
                 .endDate(source.getEndDate())
                 .amount(source.getAmount())
+                .carReturnEntity(source.getCarReturnEntity())
                 .build();
     }
 }

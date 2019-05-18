@@ -133,7 +133,8 @@ public class CarRentController {
         }
 
         // 3. check if clientIds match
-        if (clientId != carRental.getClientEntity().getId()) {
+        UUID carRentalClientId = carRental.getClientEntity().getId();
+        if (!clientId.equals(carRentalClientId)) {
             return new ResponseEntity<>(
                     "Given clientId does not match with the clientId belonging to the given carRental entry",
                     HttpStatus.BAD_REQUEST
@@ -141,11 +142,22 @@ public class CarRentController {
         }
 
         // 4. check if car has already been returned
-        // TODO
+        // NOTE! We assume that a user has returned a car when return_date is not null
+        if (carRental.getCarReturnEntity().getReturn_date() != null) {
+            return new ResponseEntity<>(
+                    "The corresponding car has already been returned!",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
 
-        carService.returnCar(carRentalId);
+        Double amountToPay = carService.returnCar(carRental, returnCarRequestBody.getComments());
 
-        // TODO: return JSON response: { "amountToPay": <number> }
-        return ResponseEntity.ok(HttpStatus.OK);
+        CarRentalResponseBody response = CarRentalResponseBody
+            .builder()
+            .amountToPay(amountToPay >= 0 ? amountToPay : 0)
+            .amountToReturn(amountToPay < 0 ? -amountToPay : 0)
+            .build();
+
+        return new ResponseEntity<Object>(response, HttpStatus.OK);
     }
 }
