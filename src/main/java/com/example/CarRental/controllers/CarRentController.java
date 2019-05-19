@@ -16,6 +16,7 @@ import java.util.UUID;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
+@RequestMapping("api")
 public class CarRentController {
 
     @Autowired
@@ -153,11 +154,38 @@ public class CarRentController {
         Double amountToPay = carService.returnCar(carRental, returnCarRequestBody.getComments());
 
         CarRentalResponseBody response = CarRentalResponseBody
-            .builder()
-            .amountToPay(amountToPay >= 0 ? amountToPay : 0)
-            .amountToReturn(amountToPay < 0 ? -amountToPay : 0)
-            .build();
+                .builder()
+                .amountToPay(amountToPay >= 0 ? amountToPay : 0)
+                .amountToReturn(amountToPay < 0 ? -amountToPay : 0)
+                .build();
 
         return new ResponseEntity<Object>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/checkPayment")
+    @ResponseBody
+    public ResponseEntity checkPayment(@RequestBody CheckPaymentRequestBody checkPaymentRequestBody) {
+        // 1. check if rentId exists
+        UUID carRentalId = checkPaymentRequestBody.getCarRentalId();
+        CarRental carRental = carRentalService.getCarRental(carRentalId);
+        if (carRental == null) {
+            return new ResponseEntity<>(
+                    "CarRental entry with given carRentalId does not exist",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        // 2. check if amountFromClient is correct
+        Double amountFromClient = checkPaymentRequestBody.getAmountFromClient();
+        Double surcharge = carRental.getCarReturnEntity().getSurcharge();
+
+        if (!surcharge.equals(amountFromClient)) {
+            return new ResponseEntity<>(
+                    "Amount of surcharge is not correct. The correct surcharge is: " + surcharge,
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
