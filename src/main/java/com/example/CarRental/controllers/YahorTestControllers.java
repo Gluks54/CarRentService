@@ -88,15 +88,15 @@ public class YahorTestControllers {
 //
 //    }
 
-    @PostMapping("/checkPayment")
-    @ResponseBody
-    public RequestEntity chackPayment(@RequestParam("rentId") String rentId,
-                                      @RequestParam ("amount") Double amountFromClient){
-
-        if(carService.checkPayment(UUID.fromString(rentId),amountFromClient)){
-            return  new ResponseEntity< String >("everything is Ok", HttpStatus.OK);
-        }else new ResponseEntity< String >("everything is Ok", HttpStatus.BAD_REQUEST;    }
-
-
-    }
-}
+//    @PostMapping("/checkPayment")
+//    @ResponseBody
+//    public RequestEntity chackPayment(@RequestParam("rentId") String rentId,
+//                                      @RequestParam ("amount") Double amountFromClient){
+//
+//        if(carService.checkPayment(UUID.fromString(rentId),amountFromClient)){
+//            return  new ResponseEntity< String >("everything is Ok", HttpStatus.OK);
+//        }else new ResponseEntity< String >("everything is Ok", HttpStatus.BAD_REQUEST;    }
+//
+//
+//    }
+}}
