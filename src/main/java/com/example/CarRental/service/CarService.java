@@ -60,7 +60,7 @@ public class CarService {
                 startDate,
                 endDate,
                 clientEntity,
-                map(car),
+                carRepository.findById(car.getId()).get(),
                 amountFromCar * days
         );
     }
@@ -104,6 +104,7 @@ public class CarService {
     public CarEntity map(Car source) {
         return CarEntity
                 .builder()
+                .id(source.getId())
                 .carBodyType(source.getCarBodyType())
                 .carStatus(source.getCarStatus())
                 .amount(source.getAmount())
