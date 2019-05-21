@@ -35,6 +35,8 @@ public class CarEntity {
 
     private Double amount;
 
+    private String URL;
+
     @OneToMany(mappedBy = "carEntity_id",fetch = FetchType.EAGER)
     List<CarRentalEntity> carRentalEntities;
 }
