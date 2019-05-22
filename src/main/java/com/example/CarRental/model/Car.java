@@ -20,4 +20,6 @@ public class Car{
     private CarStatus carStatus;
 
     private Double amount;
+
+    private String URL;
 }
