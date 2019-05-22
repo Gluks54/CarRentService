@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -24,4 +25,9 @@ public interface CarRepository extends CrudRepository<CarEntity, UUID> {
     @Query("SELECT a FROM CarEntity a")
     List<CarEntity> getAllCars();
 
+
+    Optional <CarEntity> getById(UUID carID);
+
+//    @Query("SELECT COUNT (a) FROM CarEntity a WHERE a.carRentalEntities" )
+//    Integer countByCarRentalEntities(UUID carId);
 }

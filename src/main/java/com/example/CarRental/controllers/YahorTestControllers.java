@@ -6,6 +6,7 @@ import com.example.CarRental.model.Car;
 import com.example.CarRental.model.CarStatus;
 import com.example.CarRental.model.Client;
 import com.example.CarRental.service.CarService;
+import com.example.CarRental.service.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
@@ -23,7 +24,8 @@ public class YahorTestControllers {
     @Autowired
     CarService carService;
 
-
+    @Autowired
+    StatisticService statisticService;
 
     @GetMapping("/listOfCars")
     List<Car> getListOfCars(){
@@ -56,7 +58,20 @@ public class YahorTestControllers {
                 .address("Katowice 4")
                 .email("mazxzxriam@gmail.com")
                 .build();
+    }
 
+        @GetMapping ("/getIncome")
+        public Double getIncome(){
+            return statisticService.CalculateIncome();
+        }
+
+
+        @GetMapping("/getSumOfDefineCar")
+        public Double getSumOfDefineCar(@RequestParam("CarID")String carID){
+
+        return statisticService.sumOfDefinedCar(UUID.fromString(carID));
+//            return null;
+        }
 //
 //        System.out.println(carService.addClient(client));
 ////'Content-Type': 'application/json'
@@ -99,4 +114,4 @@ public class YahorTestControllers {
 //
 //
 //    }
-}}
+}
