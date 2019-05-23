@@ -98,6 +98,7 @@ public class CarService {
                 .amount(source.getAmount())
                 .model(source.getModel())
                 .releaseYear(source.getReleaseYear())
+                .URL(source.getURL())
                 .build();
     }
 
@@ -110,6 +111,7 @@ public class CarService {
                 .amount(source.getAmount())
                 .model(source.getModel())
                 .releaseYear(source.getReleaseYear())
+                .URL(source.getURL())
                 .build();
     }
 }

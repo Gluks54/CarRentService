@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ClientRepository extends CrudRepository<ClientEntity, UUID> {
@@ -21,4 +22,13 @@ public interface ClientRepository extends CrudRepository<ClientEntity, UUID> {
 
     @Query("SELECT a FROM ClientEntity a")
     List<ClientEntity> getAllClients();
+
+    Optional<ClientEntity> findById(UUID clientID);
+
+    @Query(value = "" +
+            "SELECT COUNT(*)\n"   +
+            "FROM client_entity\n" +
+            "INNER JOIN car_rental_entity\n" +
+            "ON client_entity.id = car_rental_entity.client_entity_id AND client_entity.id = ?1" ,nativeQuery = true)
+    Integer countValueRentOfClient(UUID clientID);
 }

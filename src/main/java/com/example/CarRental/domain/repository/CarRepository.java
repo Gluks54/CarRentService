@@ -28,6 +28,10 @@ public interface CarRepository extends CrudRepository<CarEntity, UUID> {
 
     Optional <CarEntity> getById(UUID carID);
 
-//    @Query("SELECT COUNT (a) FROM CarEntity a WHERE a.carRentalEntities" )
-//    Integer countByCarRentalEntities(UUID carId);
+    @Query(value = "" +
+            "SELECT COUNT(*)\n" +
+            "FROM car_entity\n" +
+            "INNER JOIN car_rental_entity\n" +
+            "ON car_entity.id = car_rental_entity.car_id AND car_entity.id =?1 ",nativeQuery = true)
+    Integer countValueNumberOfUseCar(UUID carId);
 }

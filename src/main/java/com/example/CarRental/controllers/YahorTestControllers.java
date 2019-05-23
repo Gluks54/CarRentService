@@ -1,6 +1,12 @@
 package com.example.CarRental.controllers;
 
+import com.example.CarRental.domain.model.CarEntity;
+import com.example.CarRental.domain.model.CarRentalEntity;
+import com.example.CarRental.domain.model.CarReturnEntity;
+import com.example.CarRental.domain.model.ClientEntity;
 import com.example.CarRental.domain.repository.CarRentalRepository;
+import com.example.CarRental.domain.repository.CarRepository;
+import com.example.CarRental.domain.repository.ClientRepository;
 import com.example.CarRental.model.AvailableCarsQuery;
 import com.example.CarRental.model.Car;
 import com.example.CarRental.model.CarStatus;
@@ -27,6 +33,17 @@ public class YahorTestControllers {
     @Autowired
     StatisticService statisticService;
 
+
+    @Autowired
+    CarRentalRepository carRentalRepository;
+
+    @Autowired
+    CarRepository carRepository;
+
+    @Autowired
+    ClientRepository clientRepository;
+
+
     @GetMapping("/listOfCars")
     List<Car> getListOfCars(){
 
@@ -45,6 +62,8 @@ public class YahorTestControllers {
 //    List<Client> getAllClients(){
 //        return carService.getAllClients();
 //    }
+
+
 
 
     @PostMapping("/addClienstSecondVersion")
@@ -70,9 +89,68 @@ public class YahorTestControllers {
         public Double getSumOfDefineCar(@RequestParam("CarID")String carID){
 
         return statisticService.sumOfDefinedCar(UUID.fromString(carID));
-//            return null;
+
         }
-//
+
+        @GetMapping("/countValueNumberOfUseCar")
+        public Integer countValueNumberOfUseCar(@RequestParam("CarID")String carID){
+
+            return statisticService.countValueNumberOfUseCar(UUID.fromString(carID));
+        }
+        @GetMapping("/countValueRentOfClient")
+        public Integer countValueRentOfClient(@RequestParam("ClientID")UUID clientID){
+        return statisticService.countValueRentOfClient(clientID);
+        }
+
+        @GetMapping("/bestClient")
+        public UUID bestClient(){
+            return statisticService.bestClient();
+        }
+
+        @GetMapping("/mostPopCar")
+        public UUID mostPopCar(){
+            return statisticService.mostPopularCar();
+        }
+
+        @GetMapping("/notPopCar")
+        public UUID notPopCar(){
+            return statisticService.notPopCar();
+        }
+
+        @GetMapping("/saveRentalCar")
+        public void saveRentalCar(@RequestParam("CarId")UUID carID,@RequestParam("ClientId")UUID clientId){
+
+
+            LocalDate startDate = LocalDate.of(1352, 12, 22);
+            LocalDate endDate = LocalDate.of(1923, 10, 22);
+            LocalDate rentDate = LocalDate.of(1854, 9, 15);
+
+            LocalDate date1 = LocalDate.of(2001, 3, 22);
+            LocalDate date2 = LocalDate.of(2011, 10, 15);
+
+            CarReturnEntity carReturnEntity1 = CarReturnEntity
+                    .builder()
+                    .surcharge(69.0)
+                    .comments("it was bad car!!!!!!")
+                    .return_date(date2)
+                    .build();
+
+
+            CarRentalEntity carRentalEntity = CarRentalEntity
+                    .builder()
+                    .amount(Double.valueOf(56.0))
+                    .startDate(startDate)
+                    .endDate(endDate)
+                    .carReturnEntity(carReturnEntity1)
+                    .rentDate(rentDate)
+                    .clientEntity_id(clientRepository.findById(clientId).get())
+                    .carEntity_id(carRepository.getById(carID).get())
+                    .build();
+
+            carRentalRepository.save(carRentalEntity);
+
+        }
+
 //        System.out.println(carService.addClient(client));
 ////'Content-Type': 'application/json'
 //    }
