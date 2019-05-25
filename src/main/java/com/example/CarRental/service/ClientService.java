@@ -6,6 +6,7 @@ import com.example.CarRental.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -18,14 +19,23 @@ public class ClientService {
         return  clientRepository.existsById(clientId);
     }
 
-    public UUID addClient(Client client) {
+    public Client addClient(Client client) {
         ClientEntity clientEntity = clientRepository.save(map(client));
-        return clientEntity.getId();
+        return map(clientEntity);
+    }
+
+    public Client getClient(UUID clientId) {
+        Optional<ClientEntity> clientEntityOptional = clientRepository.findById(clientId);
+        if (!clientEntityOptional.isPresent()) {
+            return null;
+        }
+        return map(clientEntityOptional.get());
     }
 
     public Client map(ClientEntity source) {
         return Client
                 .builder()
+                .id(source.getId())
                 .name(source.getName())
                 .surname(source.getSurname())
                 .email(source.getEmail())
@@ -36,6 +46,7 @@ public class ClientService {
     public ClientEntity map(Client source) {
         return ClientEntity
                 .builder()
+                .id(source.getId())
                 .name(source.getName())
                 .surname(source.getSurname())
                 .email(source.getEmail())
