@@ -34,6 +34,6 @@ public class ClientEntity {
 
     String address;
 
-    @OneToMany(mappedBy = "clientEntity_id",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "clientEntity_id",fetch = FetchType.LAZY)
     List<CarRentalEntity> carRentalEntities;
 }

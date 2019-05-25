@@ -37,6 +37,6 @@ public class CarEntity {
 
     private String URL;
 
-    @OneToMany(mappedBy = "carEntity_id",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "carEntity_id",fetch = FetchType.LAZY)
     List<CarRentalEntity> carRentalEntities;
 }

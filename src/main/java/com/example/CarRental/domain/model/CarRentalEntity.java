@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -24,11 +23,8 @@ public class CarRentalEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-//    @Temporal(value= TemporalType.DATE)
     @Column(name="rentDate")
     private LocalDate rentDate;
-
-
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "clientEntity_id")
@@ -38,12 +34,9 @@ public class CarRentalEntity {
     @JoinColumn(name = "car_id")
     CarEntity carEntity_id;
 
-//    @Temporal(value= TemporalType.DATE)
     @Column(name="start_date")
     LocalDate startDate;
 
-
-//    @Temporal(value= TemporalType.DATE)
     @Column(name="end_date")
     LocalDate endDate;
 
