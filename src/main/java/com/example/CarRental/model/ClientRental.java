@@ -20,6 +20,7 @@ public class ClientRental {
     private LocalDate endDate;
 
     private Double amount;
+    private Double subcharge;
 
     private String comments;
     private RentalStatus status;

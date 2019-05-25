@@ -203,8 +203,7 @@ public class CarRentController {
         }
 
         // 4. check if car has already been returned
-        // NOTE! We assume that a user has returned a car when return_date is not null
-        if (carRental.getCarReturnEntity().getReturn_date() != null) {
+        if (carRental.getCarReturnEntity().getStatus() != RentalStatus.RENTED) {
             return new ResponseEntity<>(
                     "\"The corresponding car has already been returned!\"",
                     HttpStatus.BAD_REQUEST
@@ -220,6 +219,57 @@ public class CarRentController {
                 .build();
 
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping("/settleSubcharge")
+    @ResponseBody
+    public ResponseEntity settleSubcharge(@RequestBody SettleSubchargeRequestBody settleSubchargeRequestBody) {
+        // 1. check if client with given clientId exists
+        UUID clientId = settleSubchargeRequestBody.getClientId();
+        if (!clientService.clientExists(clientId)) {
+            return new ResponseEntity<>(
+                    "\"Client with this clientId does not exist\"",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        // 2. check if carRental entry with given carRentalId exists
+        UUID carRentalId = settleSubchargeRequestBody.getCarRentalId();
+        CarRental carRental = carRentalService.getCarRental(carRentalId);
+        if (carRental == null) {
+            return new ResponseEntity<>(
+                    "\"CarRental entry with given carRentalId does not exist\"",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        if (!carRental.getClientEntity().getId().equals(clientId)) {
+            return new ResponseEntity<>(
+                    "\"The rental has not been made by the client with the given clientId\"",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        // 3. check if car has already been returned
+        if (carRental.getCarReturnEntity().getStatus() == RentalStatus.RENTED) {
+            return new ResponseEntity<>(
+                    "\"The corresponding car has not been returned yet!\"",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+
+        // 4. check if the balance has already been settled
+        if (carRental.getCarReturnEntity().getStatus() == RentalStatus.RETURNED_AND_CHARGE_SETTLED) {
+            return new ResponseEntity<>(
+                    "\"The balance has already been settled\"",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        carRentalService.settleSubcharge(carRental);
+
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PostMapping("/checkPayment")

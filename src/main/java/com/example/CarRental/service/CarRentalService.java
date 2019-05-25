@@ -65,19 +65,43 @@ public class CarRentalService {
         return map(carRentalEntityOptional.get());
     }
 
+    public void settleSubcharge(CarRental carRental) {
+        CarReturnEntity carReturnEntity = carRental.getCarReturnEntity();
+        carReturnEntity.setStatus(RentalStatus.RETURNED_AND_CHARGE_SETTLED);
+        carReturnRepository.save(carReturnEntity);
+    }
+
+    private Double getSubcharge(LocalDate startDate, LocalDate endDate, LocalDate returnDate, Double pricePerDay) {
+        long days = Duration.between(endDate.atStartOfDay(), returnDate.atStartOfDay()).toDays();
+
+        // TODO
+
+        if (days == 0) {
+            days = 1;
+        }
+
+        return days * pricePerDay;
+    }
+
     public CarReturnEntity updateReturnEntry(CarRental carRental, String comments) {
         LocalDate returnDate = LocalDate.now();
 
-        long days = Duration.between(carRental.getEndDate().atStartOfDay(), returnDate.atStartOfDay()).toDays();
-        Double pricePerDay = carRental.getCarEntity().getAmount();
-
-        Double subcharge = days * pricePerDay;
+        Double subcharge = getSubcharge(
+            carRental.getStartDate(),
+            carRental.getEndDate(),
+            returnDate,
+            carRental.getCarEntity().getAmount()
+        );
 
         CarReturnEntity carReturnEntity = carRental.getCarReturnEntity();
         carReturnEntity.setReturn_date(returnDate);
         carReturnEntity.setComments(comments);
         carReturnEntity.setSurcharge(subcharge);
-        carReturnEntity.setStatus(RentalStatus.RETURNED_BUT_CHARGE_NOT_SETTLED);
+        if (subcharge <= 0) {
+            carReturnEntity.setStatus(RentalStatus.RETURNED_AND_CHARGE_SETTLED);
+        } else {
+            carReturnEntity.setStatus(RentalStatus.RETURNED_BUT_CHARGE_NOT_SETTLED);
+        }
         carReturnRepository.save(carReturnEntity);
 
         return carReturnEntity;
@@ -96,6 +120,7 @@ public class CarRentalService {
                     .startDate(item.getStartDate())
                     .endDate(item.getEndDate())
                     .amount(item.getAmount())
+                    .subcharge(item.getCarReturnEntity().getSurcharge())
                     .comments(item.getCarReturnEntity().getComments())
                     .status(item.getCarReturnEntity().getStatus())
                     .build()
