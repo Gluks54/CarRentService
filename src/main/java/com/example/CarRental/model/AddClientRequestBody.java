@@ -3,14 +3,9 @@ package com.example.CarRental.model;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.UUID;
-
 @Builder
 @Data
-public class Client {
-
-    private UUID id;
-
+public class AddClientRequestBody {
     private String name;
 
     private String surname;
