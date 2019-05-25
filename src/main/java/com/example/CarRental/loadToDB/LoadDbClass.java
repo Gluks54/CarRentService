@@ -143,7 +143,7 @@ public class LoadDbClass {
                 .builder()
                 .carBodyType("Crossover")
                 .model("Nissan Juke")
-                .carStatus(CarStatus.AVAILABLE)
+                .carStatus(CarStatus.UNAVAILABLE)
                 .amount(Double.valueOf(32.0))
                 .releaseYear(Integer.valueOf(2017))
                 .URL("https://st.motortrend.com/uploads/sites/10/2015/11/2014-nissan-juke-sv-fwd-cvt-suv-angular-front.png")

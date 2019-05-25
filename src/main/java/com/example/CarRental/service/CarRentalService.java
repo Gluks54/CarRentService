@@ -7,13 +7,18 @@ import com.example.CarRental.domain.model.ClientEntity;
 import com.example.CarRental.domain.repository.CarRentalRepository;
 import com.example.CarRental.domain.repository.CarReturnRepository;
 import com.example.CarRental.model.CarRental;
+import com.example.CarRental.model.ClientRental;
+import com.example.CarRental.model.RentalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class CarRentalService {
@@ -35,6 +40,7 @@ public class CarRentalService {
         CarReturnEntity carReturnEntity = CarReturnEntity
                 .builder()
                 .return_date(null)
+                .status(RentalStatus.RENTED)
                 .build();
 
         CarRentalEntity carRentalEntity = CarRentalEntity
@@ -71,9 +77,30 @@ public class CarRentalService {
         carReturnEntity.setReturn_date(returnDate);
         carReturnEntity.setComments(comments);
         carReturnEntity.setSurcharge(subcharge);
+        carReturnEntity.setStatus(RentalStatus.RETURNED_BUT_CHARGE_NOT_SETTLED);
         carReturnRepository.save(carReturnEntity);
 
         return carReturnEntity;
+    }
+
+    public List<ClientRental> getClientRentals(UUID clientId) {
+        return StreamSupport
+                .stream(carRentalRepository.findAll().spliterator(), false)
+                .filter(item -> item.getClientEntity_id().getId() == clientId)
+                .map(item -> ClientRental
+                    .builder()
+                    .id(item.getId())
+                    .carId(item.getCarEntity_id().getId())
+                    .rentDate(item.getRentDate())
+                    .returnDate(item.getCarReturnEntity().getReturn_date())
+                    .startDate(item.getStartDate())
+                    .endDate(item.getEndDate())
+                    .amount(item.getAmount())
+                    .comments(item.getCarReturnEntity().getComments())
+                    .status(item.getCarReturnEntity().getStatus())
+                    .build()
+                )
+                .collect(Collectors.toList());
     }
 
     public CarRental map(CarRentalEntity source) {

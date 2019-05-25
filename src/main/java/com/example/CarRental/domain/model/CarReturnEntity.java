@@ -1,5 +1,6 @@
 package com.example.CarRental.domain.model;
 
+import com.example.CarRental.model.RentalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,4 +32,6 @@ public class CarReturnEntity {
     @OneToOne(mappedBy = "carReturnEntity",fetch = FetchType.LAZY)
     private CarRentalEntity carRentalEntity;
 
+    @Enumerated(EnumType.STRING)
+    private RentalStatus status;
 }
