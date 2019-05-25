@@ -53,6 +53,31 @@ public class CarRentController {
         return carService.getAvailableCarsByParameter(query);
     }
 
+    @RequestMapping(value = "/getClient", method = GET)
+    @ResponseBody
+    public ResponseEntity getClient(@RequestParam(required = false) Map<String, String> requestParams) {
+        UUID clientId;
+        try {
+            clientId = UUID.fromString(requestParams.get("clientId"));
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    "\"Given clientId is not UUID\"",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        Client client = clientService.getClient(clientId);
+
+        if (client == null) {
+            return new ResponseEntity<>(
+                    "\"Client with this clientId does not exist\"",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+
+        return new ResponseEntity<>(client, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/allCars", method = GET)
     @ResponseBody
     public List<Car> getAllCars() {
@@ -60,9 +85,17 @@ public class CarRentController {
     }
 
     @PostMapping("/addClient")
-    public ResponseEntity addClient(@RequestBody Client client) {
-        clientService.addClient(client);
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity addClient(@RequestBody AddClientRequestBody addClientRequestBody) {
+        Client query = Client
+                .builder()
+                .name(addClientRequestBody.getName())
+                .surname(addClientRequestBody.getSurname())
+                .email(addClientRequestBody.getEmail())
+                .address(addClientRequestBody.getAddress())
+                .build();
+
+        Client newClient = clientService.addClient(query);
+        return new ResponseEntity<>(newClient, HttpStatus.OK);
     }
 
     @PostMapping("/rentCar")
@@ -72,7 +105,7 @@ public class CarRentController {
         UUID clientId = carRentalRequestBody.getClientId();
         if (!clientService.clientExists(clientId)) {
             return new ResponseEntity<>(
-                    "Client with this clientId does not exist",
+                    "\"Client with this clientId does not exist\"",
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -82,7 +115,7 @@ public class CarRentController {
         Car car = carService.getCar(carId);
         if (car == null) {
             return new ResponseEntity<>(
-                    "Car with this carId does not exist",
+                    "\"Car with this carId does not exist\"",
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -90,7 +123,7 @@ public class CarRentController {
         // 3. check if car is available
         if (car.getCarStatus() != CarStatus.AVAILABLE) {
             return new ResponseEntity<>(
-                    "Car with this carId is not available",
+                    "\"Car with this carId is not available\"",
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -118,7 +151,7 @@ public class CarRentController {
         UUID clientId = returnCarRequestBody.getClientId();
         if (!clientService.clientExists(clientId)) {
             return new ResponseEntity<>(
-                    "Client with this clientId does not exist",
+                    "\"Client with this clientId does not exist\"",
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -128,7 +161,7 @@ public class CarRentController {
         CarRental carRental = carRentalService.getCarRental(carRentalId);
         if (carRental == null) {
             return new ResponseEntity<>(
-                    "CarRental entry with given carRentalId does not exist",
+                    "\"CarRental entry with given carRentalId does not exist\"",
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -137,7 +170,7 @@ public class CarRentController {
         UUID carRentalClientId = carRental.getClientEntity().getId();
         if (!clientId.equals(carRentalClientId)) {
             return new ResponseEntity<>(
-                    "Given clientId does not match with the clientId belonging to the given carRental entry",
+                    "\"Given clientId does not match with the clientId belonging to the given carRental entry\"",
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -146,7 +179,7 @@ public class CarRentController {
         // NOTE! We assume that a user has returned a car when return_date is not null
         if (carRental.getCarReturnEntity().getReturn_date() != null) {
             return new ResponseEntity<>(
-                    "The corresponding car has already been returned!",
+                    "\"The corresponding car has already been returned!\"",
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -159,7 +192,7 @@ public class CarRentController {
                 .amountToReturn(amountToPay < 0 ? -amountToPay : 0)
                 .build();
 
-        return new ResponseEntity<Object>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/checkPayment")
@@ -170,7 +203,7 @@ public class CarRentController {
         CarRental carRental = carRentalService.getCarRental(carRentalId);
         if (carRental == null) {
             return new ResponseEntity<>(
-                    "CarRental entry with given carRentalId does not exist",
+                    "\"CarRental entry with given carRentalId does not exist\"",
                     HttpStatus.BAD_REQUEST
             );
         }
@@ -181,7 +214,7 @@ public class CarRentController {
 
         if (!surcharge.equals(amountFromClient)) {
             return new ResponseEntity<>(
-                    "Amount of surcharge is not correct. The correct surcharge is: " + surcharge,
+                    "\"Amount of surcharge is not correct. The correct surcharge is: " + surcharge + "\"",
                     HttpStatus.BAD_REQUEST
             );
         }
