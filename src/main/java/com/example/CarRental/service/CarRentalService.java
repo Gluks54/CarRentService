@@ -72,15 +72,17 @@ public class CarRentalService {
     }
 
     private Double getSubcharge(LocalDate startDate, LocalDate endDate, LocalDate returnDate, Double pricePerDay) {
-        long days = Duration.between(endDate.atStartOfDay(), returnDate.atStartOfDay()).toDays();
+        long daysBetweenEndAndReturn = Duration.between(endDate.atStartOfDay(), returnDate.atStartOfDay()).toDays();
+        long daysBetweenStartAndReturn = Duration.between(startDate.atStartOfDay(), returnDate.atStartOfDay()).toDays();
+        long daysBetweenStartAndEnd = Duration.between(startDate.atStartOfDay(), endDate.atStartOfDay()).toDays();
 
-        // TODO
-
-        if (days == 0) {
-            days = 1;
+        if (daysBetweenStartAndReturn < 0) {
+            return -daysBetweenStartAndEnd * pricePerDay;
+        } else if (daysBetweenStartAndReturn == 0) {
+            return -(daysBetweenStartAndEnd - 1) * pricePerDay;
+        } else {
+            return daysBetweenEndAndReturn * pricePerDay;
         }
-
-        return days * pricePerDay;
     }
 
     public CarReturnEntity updateReturnEntry(CarRental carRental, String comments) {
