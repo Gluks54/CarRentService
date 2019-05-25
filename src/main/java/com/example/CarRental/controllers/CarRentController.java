@@ -53,6 +53,33 @@ public class CarRentController {
         return carService.getAvailableCarsByParameter(query);
     }
 
+    @RequestMapping(value = "/getClientRentals", method = GET)
+    @ResponseBody
+    public ResponseEntity getMyRentals(@RequestParam(required = false) Map<String, String> requestParams) {
+        UUID clientId;
+        try {
+            clientId = UUID.fromString(requestParams.get("clientId"));
+        } catch (Exception e) {
+            return new ResponseEntity<>(
+                    "\"Given clientId is not UUID\"",
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+
+        Client client = clientService.getClient(clientId);
+
+        if (client == null) {
+            return new ResponseEntity<>(
+                    "\"Client with this clientId does not exist\"",
+                    HttpStatus.NOT_FOUND
+            );
+        }
+
+        List<ClientRental> clientRentals = carRentalService.getClientRentals(clientId);
+
+        return new ResponseEntity<>(clientRentals, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/getClient", method = GET)
     @ResponseBody
     public ResponseEntity getClient(@RequestParam(required = false) Map<String, String> requestParams) {

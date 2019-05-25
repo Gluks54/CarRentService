@@ -1,5 +1,6 @@
 package com.example.CarRental.domain.model;
 
+import com.example.CarRental.model.RentalStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +9,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 @Entity
 @Data
@@ -34,4 +34,6 @@ public class CarReturnEntity {
     @OneToOne(mappedBy = "carReturnEntity",fetch = FetchType.LAZY)
     private CarRentalEntity carRentalEntity;
 
+    @Enumerated(EnumType.STRING)
+    private RentalStatus status;
 }
