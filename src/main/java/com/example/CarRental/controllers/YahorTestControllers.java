@@ -144,7 +144,7 @@ public class YahorTestControllers {
                     .carReturnEntity(carReturnEntity1)
                     .rentDate(rentDate)
                     .clientEntity_id(clientRepository.findById(clientId).get())
-                    .carEntity_id(carRepository.getById(carID).get())
+                    .carEntity_id(carRepository.findById(carID).get())
                     .build();
 
             carRentalRepository.save(carRentalEntity);

@@ -57,12 +57,12 @@ public class StatisticService {
 
     public Double sumOfDefinedCar(UUID carId){
 
-        if (carRentalRepository.findAllRentalDealWithCar(carRepository.getById(carId).get()) == null){return 0.0;}
+        if (carRentalRepository.findAllRentalDealWithCar(carRepository.findById(carId).get()) == null){return 0.0;}
 
         List<Double> tempList = new ArrayList<>();
 
         carRentalRepository
-                .findAllRentalDealWithCar(carRepository.getById(carId).get())
+                .findAllRentalDealWithCar(carRepository.findById(carId).get())
                 .forEach(x -> tempList.add(x.getAmount() + x.getCarReturnEntity().getSurcharge()));
 
         return tempList
@@ -120,12 +120,17 @@ public class StatisticService {
 
 //        5. Ktory klient wypozyczyl najwiecej
         public UUID bestClient(){
-        List<ClientEntity> tempListOfClientEntity = clientRepository.getAllClients();
+        List<ClientEntity> tempListOfClientEntity = new ArrayList<>();
+
+        clientRepository
+                .findAll()
+                .forEach(x->tempListOfClientEntity.add(x));
 
         Map<UUID,Integer> allStatRentClient = tempListOfClientEntity
                 .stream()
                 .collect(Collectors.toMap(x->x.getId(),
                         x->countValueRentOfClient(x.getId())));
+
             if (allStatRentClient.size() == 0){return null;}
 
             return    allStatRentClient
@@ -135,7 +140,6 @@ public class StatisticService {
                     .findFirst()
                     .get()
                     .getKey();
-
         }
 }
 

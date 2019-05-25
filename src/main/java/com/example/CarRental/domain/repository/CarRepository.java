@@ -6,7 +6,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -22,16 +21,11 @@ public interface CarRepository extends CrudRepository<CarEntity, UUID> {
             @Param("reliseYear")Integer reliseYear
             );
 
-    @Query("SELECT a FROM CarEntity a")
-    List<CarEntity> getAllCars();
-
-
-    Optional <CarEntity> getById(UUID carID);
-
     @Query(value = "" +
             "SELECT COUNT(*)\n" +
             "FROM car_entity\n" +
             "INNER JOIN car_rental_entity\n" +
             "ON car_entity.id = car_rental_entity.car_id AND car_entity.id =?1 ",nativeQuery = true)
+
     Integer countValueNumberOfUseCar(UUID carId);
 }
