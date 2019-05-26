@@ -56,6 +56,10 @@ public class CarService {
 
         updateCarStatus(car.getId(), CarStatus.RENTED);
 
+        if (days == 0) {
+            days++;
+        }
+
         return carRentalService.addEntry(
                 startDate,
                 endDate,
