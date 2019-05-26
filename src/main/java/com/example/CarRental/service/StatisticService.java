@@ -63,7 +63,7 @@ public class StatisticService {
 
         carRentalRepository
                 .findAllRentalDealWithCar(carRepository.findById(carId).get())
-                .forEach(x -> tempList.add(x.getAmount() + x.getCarReturnEntity().getSurcharge()));
+                .forEach(x -> tempList.add(x.getAmount() +((x.getCarReturnEntity().getSurcharge() == null)?0.0:x.getCarReturnEntity().getSurcharge())));
 
         return tempList
                 .stream()
