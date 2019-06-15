@@ -17,16 +17,11 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import javax.transaction.Transactional;
-
 import static org.junit.Assert.assertEquals;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @RunWith(SpringRunner.class)
@@ -237,7 +232,4 @@ public class CarRentalServiceTest {
         assertEquals(Integer.valueOf(1),Integer.valueOf(size));
 
     }
-
-
-
 }

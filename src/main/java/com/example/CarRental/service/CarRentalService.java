@@ -11,7 +11,6 @@ import com.example.CarRental.model.ClientRental;
 import com.example.CarRental.model.RentalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
@@ -23,11 +22,15 @@ import java.util.stream.StreamSupport;
 @Service
 public class CarRentalService {
 
-    @Autowired
     CarRentalRepository carRentalRepository;
+    CarReturnRepository carReturnRepository;
 
     @Autowired
-    CarReturnRepository carReturnRepository;
+    public CarRentalService(CarRentalRepository carRentalRepository,
+                            CarReturnRepository carReturnRepository){
+        this.carRentalRepository = carRentalRepository;
+        this.carReturnRepository = carReturnRepository;
+    }
 
     public UUID addEntry(
             LocalDate startDate,

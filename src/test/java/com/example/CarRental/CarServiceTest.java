@@ -6,11 +6,8 @@ import com.example.CarRental.domain.repository.CarRepository;
 import com.example.CarRental.model.Car;
 import com.example.CarRental.model.CarStatus;
 import com.example.CarRental.service.CarService;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,10 +28,6 @@ public class CarServiceTest {
     @Autowired
     CarService carService;
 
-    //    @Before
-//    public void init(){
-//        MockitoAnnotations.initMocks(this);
-//    }
     @Test
     public void getAvailableCarsByParameterTest(){
         CarEntity carEntity = CarEntity
@@ -55,7 +48,6 @@ public class CarServiceTest {
         expectedCar.add(carEntity);
 
         assertEquals(1,size);
-        //assertEquals(expectedCar,carRepository.getAvailableCarsByParameter(5d, null, null, null ));
     }
 
 
@@ -76,7 +68,6 @@ public class CarServiceTest {
         UUID uuid = carRepository.save(carEntity).getId();
 
         List<Car> allCars = carService.getAllCars();
-//        Car car = carService.getAllCars().stream().filter(x ->x.getId().equals(uuid));
         int size = allCars.size();
 
         assertEquals((carsBefore.size()+1),size);

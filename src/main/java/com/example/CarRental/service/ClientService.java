@@ -12,8 +12,12 @@ import java.util.UUID;
 @Service
 public class ClientService {
 
+    private final ClientRepository clientRepository;
+
     @Autowired
-    ClientRepository clientRepository;
+    public ClientService(ClientRepository clientRepository){
+        this.clientRepository = clientRepository;
+    }
 
     public boolean clientExists(UUID clientId) {
         return  clientRepository.existsById(clientId);

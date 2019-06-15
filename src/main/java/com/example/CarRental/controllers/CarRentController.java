@@ -4,29 +4,35 @@ import com.example.CarRental.model.*;
 import com.example.CarRental.service.CarRentalService;
 import com.example.CarRental.service.CarService;
 import com.example.CarRental.service.ClientService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 @RestController
 @RequestMapping("api")
+@Api(value="CarRentController", description="There API For rent,return and get cars;")
 public class CarRentController {
 
-    @Autowired
-    private CarService carService;
+    private final CarService carService;
+    private final ClientService clientService;
+    private final CarRentalService carRentalService;
 
     @Autowired
-    private ClientService clientService;
+    public CarRentController(
+            CarService carService,
+            ClientService clientService,
+            CarRentalService carRentalService){
+        this.carService = carService;
+        this.clientService = clientService;
+        this.carRentalService = carRentalService;
+    }
 
-    @Autowired
-    private CarRentalService carRentalService;
 
     @RequestMapping(value = "/filteredCars", method = GET)
     @ResponseBody

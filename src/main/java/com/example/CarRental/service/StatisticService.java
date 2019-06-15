@@ -1,42 +1,35 @@
 package com.example.CarRental.service;
 
-import com.example.CarRental.domain.model.CarEntity;
-import com.example.CarRental.domain.model.CarRentalEntity;
 import com.example.CarRental.domain.model.ClientEntity;
 import com.example.CarRental.domain.repository.CarRentalRepository;
 import com.example.CarRental.domain.repository.CarRepository;
-import com.example.CarRental.domain.repository.CarReturnRepository;
 import com.example.CarRental.domain.repository.ClientRepository;
 import com.example.CarRental.model.Car;
-import com.example.CarRental.model.CarRental;
-import com.example.CarRental.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+
 
 @Service
 public class StatisticService {
 
-    @Autowired
-    CarRentalRepository carRentalRepository;
+    private final CarRentalRepository carRentalRepository;
+    private final CarRepository carRepository;
+    private final CarService carService;
+    private final ClientRepository clientRepository;
 
     @Autowired
-    CarReturnRepository carReturnRepository;
-
-    @Autowired
-    CarRepository carRepository;
-
-    @Autowired
-    CarService carService;
-
-    @Autowired
-    ClientRepository clientRepository;
-
-    @Autowired
-    ClientService clientService;
+    public StatisticService(
+            CarRentalRepository carRentalRepository,
+            CarRepository carRepository,
+            CarService carService,
+            ClientRepository clientRepository){
+        this.clientRepository = clientRepository;
+        this.carRentalRepository = carRentalRepository;
+        this.carService = carService;
+        this.carRepository = carRepository;
+    }
 
     public Double CalculateIncome() {
 //        Musi policzyc sume amount+surcharge
