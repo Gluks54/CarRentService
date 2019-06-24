@@ -28,7 +28,7 @@ public class SwaggerConfig {
                 "Spring Boot REST API for Person_API",
                 "1.0",
                 "Terms of service",
-                new Contact("Yahor Viarenich, Ksenia Binas, Aneta Prokopiuk", "https://github.com/Gluks54/HistoryOfPerson", "gluks0575@gmail.com"),
+                new Contact("Yahor Viarenich, Ksenia Binas, Aneta Prokopiuk", "https://github.com/Gluks54/CarRentService", "gluks0575@gmail.com"),
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0");
         return apiInfo;
