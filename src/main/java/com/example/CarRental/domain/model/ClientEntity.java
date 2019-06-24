@@ -6,9 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +27,6 @@ public class ClientEntity {
 
     String surname;
 
-    @Email
     String email;
 
     String address;
