@@ -12,6 +12,7 @@
 	<artifactId>CarRental</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>CarRental</name>
+	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
