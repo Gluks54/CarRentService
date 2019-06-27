@@ -1,0 +1,23 @@
+Car rental service.
+
+Using technologies:
+
+Backend:
+Java 8
+Spring Boot
+Swagger
+H2
+Created by : Yahor Viarenich,Ksenia Binas, Aneta Prokopiuk;
+
+Frontend:
+Angular + JS
+Created by Ksenia Binas;
+
+Description:
+
+Project is still being developed. Check out on:
+https://floating-scrubland-88966.herokuapp.com/cars
+
+Swagger: https://floating-scrubland-88966.herokuapp.com/swagger-ui.html#/
+
+Project allows you rent a car for specific period of time. Also you can get all statistic information  about that car.
