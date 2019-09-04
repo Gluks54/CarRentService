@@ -1,4 +1,4 @@
-package com.example.CarRental.domain.model;
+package com.pl.CarRental.domain.model;
 
 
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,6 @@ public class ClientEntity {
 
     String address;
 
-    @OneToMany(mappedBy = "clientEntity_id",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "clientEntity_id", fetch = FetchType.LAZY)
     List<CarRentalEntity> carRentalEntities;
 }

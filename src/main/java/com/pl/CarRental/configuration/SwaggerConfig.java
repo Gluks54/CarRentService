@@ -1,4 +1,4 @@
-package com.example.CarRental.configuration;
+package com.pl.CarRental.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +22,7 @@ public class SwaggerConfig {
                 .build()
                 .apiInfo(metaData());
     }
+
     private ApiInfo metaData() {
         ApiInfo apiInfo = new ApiInfo(
                 "Spring Boot REST API",

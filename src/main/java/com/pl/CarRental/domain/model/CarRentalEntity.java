@@ -1,10 +1,11 @@
-package com.example.CarRental.domain.model;
+package com.pl.CarRental.domain.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class CarRentalEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name="rentDate")
+    @Column(name = "rentDate")
     private LocalDate rentDate;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
@@ -34,15 +35,15 @@ public class CarRentalEntity {
     @JoinColumn(name = "car_id")
     CarEntity carEntity_id;
 
-    @Column(name="start_date")
+    @Column(name = "start_date")
     LocalDate startDate;
 
-    @Column(name="end_date")
+    @Column(name = "end_date")
     LocalDate endDate;
 
     Double amount;
 
-    @OneToOne(cascade = CascadeType.ALL,optional = false,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name = "returnCar_id", referencedColumnName = "id")
     CarReturnEntity carReturnEntity;
 }

@@ -1,28 +1,30 @@
-package com.example.CarRental;
+package com.pl.CarRental;
 
-import com.example.CarRental.domain.model.CarEntity;
-import com.example.CarRental.domain.model.CarRentalEntity;
-import com.example.CarRental.domain.model.CarReturnEntity;
-import com.example.CarRental.domain.model.ClientEntity;
-import com.example.CarRental.domain.repository.CarRentalRepository;
-import com.example.CarRental.domain.repository.CarRepository;
-import com.example.CarRental.domain.repository.CarReturnRepository;
-import com.example.CarRental.domain.repository.ClientRepository;
-import com.example.CarRental.model.CarRental;
-import com.example.CarRental.model.CarStatus;
-import com.example.CarRental.model.ClientRental;
-import com.example.CarRental.service.CarRentalService;
+import com.pl.CarRental.domain.model.CarEntity;
+import com.pl.CarRental.domain.model.CarRentalEntity;
+import com.pl.CarRental.domain.model.CarReturnEntity;
+import com.pl.CarRental.domain.model.ClientEntity;
+import com.pl.CarRental.domain.repository.CarRentalRepository;
+import com.pl.CarRental.domain.repository.CarRepository;
+import com.pl.CarRental.domain.repository.CarReturnRepository;
+import com.pl.CarRental.domain.repository.ClientRepository;
+import com.pl.CarRental.model.CarRental;
+import com.pl.CarRental.model.CarStatus;
+import com.pl.CarRental.model.ClientRental;
+import com.pl.CarRental.service.CarRentalService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import javax.transaction.Transactional;
-import static org.junit.Assert.assertEquals;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -62,7 +64,6 @@ public class CarRentalServiceTest {
                 .email("mariam@gmail.com")
                 .build();
 
-
         LocalDate startDate = LocalDate.of(2001, 3, 22);
         LocalDate endDate = LocalDate.of(2011, 10, 15);
 
@@ -75,7 +76,6 @@ public class CarRentalServiceTest {
 
         assertNotNull(uuid);
     }
-
 
     @Test
     public void getCarRentalTest() {
@@ -97,7 +97,6 @@ public class CarRentalServiceTest {
                 .address("Komorowska 4")
                 .email("mariam@gmail.com")
                 .build();
-
 
         LocalDate startDate = LocalDate.of(2001, 3, 22);
         LocalDate endDate = LocalDate.of(2011, 10, 15);
@@ -149,7 +148,6 @@ public class CarRentalServiceTest {
                 .email("mariam@gmail.com")
                 .build();
 
-
         LocalDate startDate = LocalDate.of(2001, 3, 22);
         LocalDate endDate = LocalDate.of(2011, 10, 15);
         LocalDate date = LocalDate.of(2018, 7, 15);
@@ -180,7 +178,7 @@ public class CarRentalServiceTest {
 
     @Test
     @Transactional
-    public void getClientRentalsTest(){
+    public void getClientRentalsTest() {
         CarEntity carEntity = CarEntity
                 .builder()
                 .carBodyType("Sedan")
@@ -222,14 +220,11 @@ public class CarRentalServiceTest {
                 .carReturnEntity(carReturnEntity)
                 .build();
 
-        UUID uuid =  carRentalRepository.save(carRentalEntity).getId();
         ClientEntity clientEntityFromRepo = carRentalEntity.getClientEntity_id();
         UUID client_id = clientEntityFromRepo.getId();
 
-
         List<ClientRental> clientRentals = carRentalService.getClientRentals(client_id);
-        int size =clientRentals.size();
-        assertEquals(Integer.valueOf(1),Integer.valueOf(size));
-
+        int size = clientRentals.size();
+        assertEquals(Integer.valueOf(1), Integer.valueOf(size));
     }
 }

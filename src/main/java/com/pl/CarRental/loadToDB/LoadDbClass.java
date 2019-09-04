@@ -1,22 +1,22 @@
-package com.example.CarRental.loadToDB;
+package com.pl.CarRental.loadToDB;
 
 
-import com.example.CarRental.domain.model.CarEntity;
-import com.example.CarRental.domain.model.CarRentalEntity;
-import com.example.CarRental.domain.model.CarReturnEntity;
-import com.example.CarRental.domain.model.ClientEntity;
-import com.example.CarRental.domain.repository.CarRentalRepository;
-import com.example.CarRental.domain.repository.CarRepository;
-import com.example.CarRental.domain.repository.ClientRepository;
-import com.example.CarRental.model.CarStatus;
+import com.pl.CarRental.domain.model.CarEntity;
+import com.pl.CarRental.domain.model.CarRentalEntity;
+import com.pl.CarRental.domain.model.CarReturnEntity;
+import com.pl.CarRental.domain.model.ClientEntity;
+import com.pl.CarRental.domain.repository.CarRentalRepository;
+import com.pl.CarRental.domain.repository.CarRepository;
+import com.pl.CarRental.domain.repository.ClientRepository;
+import com.pl.CarRental.model.CarStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 
 @Component
 public class LoadDbClass {
-
     private final CarRentalRepository carRentalRepository;
     private final CarRepository carRepository;
     private final ClientRepository clientRepository;
@@ -26,12 +26,11 @@ public class LoadDbClass {
             CarRentalRepository carRentalRepository,
             CarRepository carRepository,
             ClientRepository clientRepository
-    ){
+    ) {
         this.clientRepository = clientRepository;
         this.carRentalRepository = carRentalRepository;
         this.carRepository = carRepository;
     }
-
 
     @PostConstruct
     public void loadDataToDb() {
@@ -176,8 +175,6 @@ public class LoadDbClass {
 //        clientRepository.saveAndFlush(clientEntity1);
         clientRepository.saveAndFlush(clientEntity2);
         clientRepository.saveAndFlush(clientEntity3);
-
-
 
 
         LocalDate date1 = LocalDate.of(2001, 3, 22);

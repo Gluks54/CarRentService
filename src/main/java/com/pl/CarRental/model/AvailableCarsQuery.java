@@ -1,4 +1,4 @@
-package com.example.CarRental.model;
+package com.pl.CarRental.model;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,8 +7,12 @@ import lombok.Data;
 @Builder
 public class AvailableCarsQuery {
     private String model;
+
     private String carBodyType;
+
     private Integer releaseYear;
+
     private CarStatus carStatus;
+
     private Double amount;
 }

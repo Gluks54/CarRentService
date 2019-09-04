@@ -1,4 +1,4 @@
-package com.example.CarRental;
+package com.pl.CarRental;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class CarRentalApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CarRentalApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CarRentalApplication.class, args);
+    }
 
 }

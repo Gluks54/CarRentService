@@ -1,4 +1,4 @@
-package com.example.CarRental.model;
+package com.pl.CarRental.model;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,5 +7,6 @@ import lombok.Data;
 @Data
 public class CarRentalResponseBody {
     Double amountToPay;
+
     Double amountToReturn;
 }

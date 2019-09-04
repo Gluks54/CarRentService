@@ -1,8 +1,8 @@
-package com.example.CarRental.model;
+package com.pl.CarRental.model;
 
-import com.example.CarRental.domain.model.CarEntity;
-import com.example.CarRental.domain.model.CarReturnEntity;
-import com.example.CarRental.domain.model.ClientEntity;
+import com.pl.CarRental.domain.model.CarEntity;
+import com.pl.CarRental.domain.model.CarReturnEntity;
+import com.pl.CarRental.domain.model.ClientEntity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +12,6 @@ import java.util.UUID;
 @Builder
 @Data
 public class CarRental {
-
     private UUID id;
 
     private LocalDate rentDate;

@@ -1,9 +1,10 @@
-package com.example.CarRental.domain.repository;
+package com.pl.CarRental.domain.repository;
 
-import com.example.CarRental.domain.model.CarEntity;
-import com.example.CarRental.domain.model.CarRentalEntity;
+import com.pl.CarRental.domain.model.CarEntity;
+import com.pl.CarRental.domain.model.CarRentalEntity;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
 import java.util.List;
 import java.util.UUID;
 

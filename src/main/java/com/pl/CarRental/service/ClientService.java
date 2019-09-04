@@ -1,8 +1,8 @@
-package com.example.CarRental.service;
+package com.pl.CarRental.service;
 
-import com.example.CarRental.domain.model.ClientEntity;
-import com.example.CarRental.domain.repository.ClientRepository;
-import com.example.CarRental.model.Client;
+import com.pl.CarRental.domain.model.ClientEntity;
+import com.pl.CarRental.domain.repository.ClientRepository;
+import com.pl.CarRental.model.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +11,15 @@ import java.util.UUID;
 
 @Service
 public class ClientService {
-
     private final ClientRepository clientRepository;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository){
+    public ClientService(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
     public boolean clientExists(UUID clientId) {
-        return  clientRepository.existsById(clientId);
+        return clientRepository.existsById(clientId);
     }
 
     public Client addClient(Client client) {

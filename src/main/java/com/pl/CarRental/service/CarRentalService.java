@@ -1,16 +1,17 @@
-package com.example.CarRental.service;
+package com.pl.CarRental.service;
 
-import com.example.CarRental.domain.model.CarEntity;
-import com.example.CarRental.domain.model.CarRentalEntity;
-import com.example.CarRental.domain.model.CarReturnEntity;
-import com.example.CarRental.domain.model.ClientEntity;
-import com.example.CarRental.domain.repository.CarRentalRepository;
-import com.example.CarRental.domain.repository.CarReturnRepository;
-import com.example.CarRental.model.CarRental;
-import com.example.CarRental.model.ClientRental;
-import com.example.CarRental.model.RentalStatus;
+import com.pl.CarRental.domain.model.CarEntity;
+import com.pl.CarRental.domain.model.CarRentalEntity;
+import com.pl.CarRental.domain.model.CarReturnEntity;
+import com.pl.CarRental.domain.model.ClientEntity;
+import com.pl.CarRental.domain.repository.CarRentalRepository;
+import com.pl.CarRental.domain.repository.CarReturnRepository;
+import com.pl.CarRental.model.CarRental;
+import com.pl.CarRental.model.ClientRental;
+import com.pl.CarRental.model.RentalStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,13 +22,12 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class CarRentalService {
-
     CarRentalRepository carRentalRepository;
     CarReturnRepository carReturnRepository;
 
     @Autowired
     public CarRentalService(CarRentalRepository carRentalRepository,
-                            CarReturnRepository carReturnRepository){
+                            CarReturnRepository carReturnRepository) {
         this.carRentalRepository = carRentalRepository;
         this.carReturnRepository = carReturnRepository;
     }
@@ -92,10 +92,10 @@ public class CarRentalService {
         LocalDate returnDate = LocalDate.now();
 
         Double subcharge = getSubcharge(
-            carRental.getStartDate(),
-            carRental.getEndDate(),
-            returnDate,
-            carRental.getCarEntity().getAmount()
+                carRental.getStartDate(),
+                carRental.getEndDate(),
+                returnDate,
+                carRental.getCarEntity().getAmount()
         );
 
         CarReturnEntity carReturnEntity = carRental.getCarReturnEntity();
@@ -117,18 +117,18 @@ public class CarRentalService {
                 .stream(carRentalRepository.findAll().spliterator(), false)
                 .filter(item -> item.getClientEntity_id().getId() == clientId)
                 .map(item -> ClientRental
-                    .builder()
-                    .id(item.getId())
-                    .carId(item.getCarEntity_id().getId())
-                    .rentDate(item.getRentDate())
-                    .returnDate(item.getCarReturnEntity().getReturn_date())
-                    .startDate(item.getStartDate())
-                    .endDate(item.getEndDate())
-                    .amount(item.getAmount())
-                    .subcharge(item.getCarReturnEntity().getSurcharge())
-                    .comments(item.getCarReturnEntity().getComments())
-                    .status(item.getCarReturnEntity().getStatus())
-                    .build()
+                        .builder()
+                        .id(item.getId())
+                        .carId(item.getCarEntity_id().getId())
+                        .rentDate(item.getRentDate())
+                        .returnDate(item.getCarReturnEntity().getReturn_date())
+                        .startDate(item.getStartDate())
+                        .endDate(item.getEndDate())
+                        .amount(item.getAmount())
+                        .subcharge(item.getCarReturnEntity().getSurcharge())
+                        .comments(item.getCarReturnEntity().getComments())
+                        .status(item.getCarReturnEntity().getStatus())
+                        .build()
                 )
                 .collect(Collectors.toList());
     }

@@ -1,5 +1,5 @@
-package com.example.CarRental.model;
+package com.pl.CarRental.model;
 
 public enum CarStatus {
-    AVAILABLE,UNAVAILABLE,RENTED
+    AVAILABLE, UNAVAILABLE, RENTED
 }

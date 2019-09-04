@@ -1,6 +1,6 @@
-package com.example.CarRental.domain.model;
+package com.pl.CarRental.domain.model;
 
-import com.example.CarRental.model.CarStatus;
+import com.pl.CarRental.model.CarStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,9 +24,9 @@ public class CarEntity {
     @Column(name = "id")
     private UUID id;
 
-    private  String model;
+    private String model;
 
-    private  String carBodyType;
+    private String carBodyType;
 
     private Integer releaseYear;
 
@@ -37,6 +37,6 @@ public class CarEntity {
 
     private String URL;
 
-    @OneToMany(mappedBy = "carEntity_id",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "carEntity_id", fetch = FetchType.LAZY)
     List<CarRentalEntity> carRentalEntities;
 }
